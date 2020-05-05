@@ -1,0 +1,144 @@
+<app-customer-linked-users [id]="customerId" (close)="onCloseUsersBox()"*ngIf = "showUsersBox"></app-customer-linked-users>
+<app-add-customer
+  *ngIf="customerFormBoolean"
+  (cancelEventEmitter)="onCloseCustomerForm()"
+  (refreshEventEmitter)="refreshCustomers()"
+></app-add-customer>
+<app-alert *ngIf="result" (closeAlert)="onHandleAlert()" [message]="result">
+</app-alert>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-8">
+      <div class="alert alert-primary" role="alert">
+        <h4 class="textClass">List Of Customers</h4>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container-fluid">
+  <div class="col-md-4 offset-md-9">
+    <button class="btn btn-primary" (click)="onOpenCustomerForm()">Add Customer</button>
+  </div>
+  <table class="table table-hover">
+    <thead class="thead-dark">
+      <tr>
+        <th>Name</th>
+        <th>Website</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let customer of customers; let i = index">
+        <td
+          [ngStyle]="{
+            backgroundColor:
+              editButtonClicked[i] === false ? 'transparent' : '#ccffff'
+          }"
+        >
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="customers[i].name"
+            required
+            appNameValidator
+            #name="ngModel"
+            [disabled]="editButtonClicked[i] === false"
+          />
+          <span *ngIf="!name.valid && !name.disabled" class="help-block"
+            >Invalid Name</span
+          >
+        </td>
+        <td
+          [ngStyle]="{
+            backgroundColor:
+              editButtonClicked[i] === false ? 'transparent' : '#ccffff'
+          }"
+        >
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="customers[i].website"
+            required
+            #website="ngModel"
+            [disabled]="editButtonClicked[i] === false"
+          />
+          <span *ngIf="!website.valid && !website.disabled" class="help-block"
+            >Required</span
+          >
+        </td>
+        <td
+          [ngStyle]="{
+            backgroundColor:
+              editButtonClicked[i] === false ? 'transparent' : '#ccffff'
+          }"
+        >
+          <textarea
+            type="text"
+            class="form-control"
+            [(ngModel)]="customers[i].description"
+            required
+            #description="ngModel"
+            [disabled]="editButtonClicked[i] === false"
+          ></textarea>
+          <span
+            *ngIf="!description.valid && !description.disabled"
+            class="help-block"
+            >Required</span
+          >
+        </td>
+        <td>
+          <button type="button" class="btn btn-primary" (click)="onShowUsersBox(customer.id)">Show Users</button>
+        </td>
+        <td>
+          <button
+            #button1
+            [disabled]="
+              editButtonClicked[i] &&
+              (name.invalid || website.invalid || description.invalid)
+            "
+            [ngStyle]="{
+              cursor:
+                editButtonClicked[i] &&
+                (name.invalid || website.invalid || description.invalid)
+                  ? 'not-allowed'
+                  : 'pointer'
+            }"
+            [name]="editButtonClicked[i] === false ? 'edit' : 'save'"
+            [ngClass]="{
+              btn: true,
+              'btn-primary': button1.name == 'edit',
+              'btn-success': button1.name == 'save'
+            }"
+            (click)="
+              editButtonClicked[i] === false
+                ? onEdit(i)
+                : onSave(customer.id, i)
+            "
+            type="button"
+          >
+            {{ editButtonClicked[i] === false ? "Edit" : "Save" }}
+          </button>
+        </td>
+        <td>
+          <button
+            #button2
+            [name]="editButtonClicked[i] === false ? 'delete' : 'cancel'"
+            [ngClass]="{
+              btn: true,
+              'btn-danger': button2.name == 'delete',
+              'btn-info': button2.name == 'cancel'
+            }"
+            (click)="
+              editButtonClicked[i] === false
+                ? onDelete(customer.id, i)
+                : onCancel(i)
+            "
+            type="button"
+          >
+            {{ editButtonClicked[i] === false ? "Delete" : "Cancel" }}
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

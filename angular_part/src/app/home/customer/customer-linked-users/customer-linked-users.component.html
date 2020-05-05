@@ -1,0 +1,21 @@
+<!-- <app-alert
+  *ngIf="result"
+  (closeAlert)="onHandleAlert()"
+  [message]="result"
+></app-alert> -->
+<div class="backdrop"></div>
+<div class="alert-box">
+  <div class="alert-box-actions">
+    <a (click)="onClose()"
+      ><img
+        src="https://previews.123rf.com/images/igoun/igoun1805/igoun180500088/101280971-cross-icon-in-circle-can-be-used-as-delete-block-close-button-etc-delete-x-cross-rounded-icon-is-fla.jpg"
+        alt=""
+    /></a>
+    <div class="container-fluid">
+      <div class="col-md-8">
+      <app-user-page [dataGetLink] = "dataProviderLink"></app-user-page>
+    </div>
+    </div>
+   
+  </div>
+</div>

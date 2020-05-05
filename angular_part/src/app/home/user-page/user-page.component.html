@@ -1,0 +1,238 @@
+<app-alert *ngIf="result" (closeAlert)="onHandleAlert()" [message]="result">
+</app-alert>
+<div class="container-fluid">
+<div class="table-wrapper-scroll-y my-custom-scrollbar">
+  <table
+    class="table table-hover"
+  >
+    <thead>
+      <tr>
+        <th>First Name</th>
+        <th>Middle Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+        <th>Phone Number</th>
+        <th>Role</th>
+        <th>Address</th>
+        <th>Customer</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users; let i = index" id="{{ user.id }}">
+        <td
+          [ngStyle]="{
+            backgroundColor:
+              editButtonClicked[i] === false ? 'transparent' : '#ccffff'
+          }"
+        >
+          <input
+            type="text"
+            [(ngModel)]="users[i].firstName"
+            name="firstName"
+            #firstName="ngModel"
+            required
+            [disabled]="editButtonClicked[i] === false"
+            appNameValidator
+          />
+          <span
+            *ngIf="!firstName.valid && !firstName.disabled"
+            class="help-block"
+            >Invalid First Name</span
+          >
+        </td>
+        <td
+          [ngStyle]="{
+            backgroundColor:
+              editButtonClicked[i] === false ? 'transparent' : '#ccffff'
+          }"
+        >
+          <input
+            type="text"
+            [(ngModel)]="users[i].middleName"
+            #middleName="ngModel"
+            [disabled]="editButtonClicked[i] === false"
+            appNameValidator
+            name="middleName"
+          />
+          <span
+            *ngIf="!middleName.valid && !middleName.disabled"
+            class="help-block"
+            >Invalid middle Name</span
+          >
+        </td>
+        <td
+          [ngStyle]="{
+            backgroundColor:
+              editButtonClicked[i] === false ? 'transparent' : '#ccffff'
+          }"
+        >
+          <input
+            type="text"
+            [(ngModel)]="users[i].lastName"
+            #lastName="ngModel"
+            required
+            [disabled]="editButtonClicked[i] === false"
+            appNameValidator
+            name="lastName"
+          />
+          <span *ngIf="!lastName.valid && !lastName.disabled" class="help-block"
+            >Invalid last Name</span
+          >
+        </td>
+        <td
+          [ngStyle]="{
+            backgroundColor:
+              editButtonClicked[i] === false ? 'transparent' : '#ccffff'
+          }"
+        >
+          <input
+            type="text"
+            [(ngModel)]="users[i].email"
+            #email="ngModel"
+            required
+            [disabled]="editButtonClicked[i] === false"
+            email
+            name="email"
+          />
+          <span *ngIf="!email.disabled && !email.valid" class="help-block"
+            >Invalid Email
+          </span>
+        </td>
+        <td
+          [ngStyle]="{
+            backgroundColor:
+              editButtonClicked[i] === false ? 'transparent' : '#ccffff'
+          }"
+        >
+          <input
+            type="text"
+            [(ngModel)]="users[i].phoneNumber"
+            #phoneNumber="ngModel"
+            required
+            [disabled]="editButtonClicked[i] === false"
+            appPhoneNumberValidator
+            name="phoneNumber"
+          />
+          <span
+            *ngIf="!phoneNumber.valid && !phoneNumber.disabled"
+            class="help-block"
+            >Invalid phoneNumber</span
+          >
+        </td>
+        <td
+          [ngStyle]="{
+            backgroundColor:
+              editButtonClicked[i] === false ? 'transparent' : '#ccffff'
+          }"
+        >
+          <select
+            [(ngModel)]="users[i].empRoleId"
+            name="role"
+            id="role"
+            form-control
+            [disabled]="editButtonClicked[i] === false"
+          >
+            <option *ngFor="let role of roles" value="{{ role.id }}">{{
+              role.roleName
+            }}</option>
+          </select>
+        </td>
+        <td
+          [ngStyle]="{
+            backgroundColor:
+              editButtonClicked[i] === false ? 'transparent' : '#ccffff'
+          }"
+        >
+          <input
+            type="text"
+            [(ngModel)]="users[i].address"
+            #address="ngModel"
+            required
+            [disabled]="editButtonClicked[i] === false"
+            name="address"
+          />
+          <span *ngIf="!address.valid && !address.disabled" class="help-block"
+            >Address required</span
+          >
+        </td>
+
+        <td
+          [ngStyle]="{
+            backgroundColor:
+              editButtonClicked[i] === false ? 'transparent' : '#ccffff'
+          }"
+        >
+          <select
+            [disabled]="editButtonClicked[i] === false"
+            [(ngModel)]="users[i].customerId"
+            name="customerId"
+            id="customerId"
+          >
+            <option
+              *ngFor="let customer of customers"
+              value="{{ customer.id }}"
+              >{{ customer.name }}</option
+            >
+          </select>
+        </td>
+
+        <td>
+          <button
+            #button1
+            [disabled]="
+              editButtonClicked[i] &&
+              (firstName.invalid ||
+                middleName.invalid ||
+                lastName.invalid ||
+                email.invalid ||
+                phoneNumber.invalid ||
+                address.invalid)
+            "
+            [ngStyle]="{
+              cursor:
+                editButtonClicked[i] &&
+                (firstName.invalid ||
+                  middleName.invalid ||
+                  lastName.invalid ||
+                  email.invalid ||
+                  phoneNumber.invalid ||
+                  address.invalid)
+                  ? 'not-allowed'
+                  : 'pointer'
+            }"
+            [name]="editButtonClicked[i] === false ? 'edit' : 'save'"
+            [ngClass]="{
+              btn: true,
+              'btn-primary': button1.name == 'edit',
+              'btn-success': button1.name == 'save'
+            }"
+            (click)="editButtonClicked[i] === false ? onEdit(i) : onSave(i)"
+            type="button"
+          >
+            {{ editButtonClicked[i] === false ? "Edit" : "Save" }}
+          </button>
+        </td>
+        <td>
+          <button
+            #button2
+            [name]="editButtonClicked[i] === false ? 'delete' : 'cancel'"
+            [ngClass]="{
+              btn: true,
+              'btn-danger': button2.name == 'delete',
+              'btn-info': button2.name == 'cancel'
+            }"
+            (click)="
+              editButtonClicked[i] === false
+                ? onDelete(user.id, i)
+                : onCancel(i)
+            "
+            type="button"
+          >
+            {{ editButtonClicked[i] === false ? "Delete" : "Cancel" }}
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+</div>
