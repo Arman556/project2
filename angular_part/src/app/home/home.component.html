@@ -1,0 +1,18 @@
+<div class="continer">
+  <div class="row">
+    <div class="col-md-3">
+      <ul class="list-group">
+        <li role="presentation"  class="list-group-item">
+          <a routerLink="/users"   routerLinkActive="btn btn-primary" (click)="dataToShow = 'Refresh Data'" >{{ dataToShow }}</a>
+          <hr>
+          <a routerLink="/new-user" routerLinkActive="btn btn-primary"  >New User</a>  
+          <hr>
+          <a routerLink="/customers" routerLinkActive="btn btn-primary" >Customers</a>  
+        </li>
+      </ul>
+    </div>
+    <div class="col-md-9">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

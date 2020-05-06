@@ -1,0 +1,97 @@
+
+<div class="backdrop"></div>
+<div class="alert-box">
+  <app-alert *ngIf="result" (closeAlert)="onHandleAlert()" [message]="result"></app-alert>
+  <div class="container-fluid">
+    <form (ngSubmit)="onSubmit()" #f="ngForm">
+      <div class="form-group">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="alert alert-primary" role="alert">
+              <h4 class="textClass">Add New Customer</h4>
+            </div>
+          </div>
+        </div>
+        <hr />
+        <div class="row">
+          <div class="col-md-6">
+            <div class="row">
+              <label for="customerName">Customer Name</label>
+            </div>
+            <div class="row">
+              <input
+                type="text"
+                required
+                id="customerName"
+                name="name"
+                ngModel
+                class="form-control"
+                #customerName="ngModel"
+                appNameValidator
+              />
+              <span
+                class="help-block"
+                *ngIf="!customerName.valid && customerName.touched"
+                >Invalid Customer Name</span
+              >
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="row">
+              <label for="website">Website</label>
+            </div>
+            <div class="row">
+              <input
+                type="text"
+                required
+                id="website"
+                name="website"
+                ngModel
+                class="form-control"
+                #website="ngModel"
+              />
+              <span class="help-block" *ngIf="!website.valid && website.touched"
+                >Invalid website</span
+              >
+            </div>
+          </div>
+        </div>
+        <hr />
+
+        <div class="row">
+          <div class="col-md-3">
+            <label for="Description">Description</label>
+          </div>
+          <div class="col-md-9">
+            <textarea
+              type="text"
+              required
+              id="description"
+              name="description"
+              ngModel
+              class="form-control"
+              #description="ngModel"
+            ></textarea>
+            <span
+              class="help-block"
+              *ngIf="!description.valid && description.touched"
+              >Description is required</span
+            >
+          </div>
+        </div>
+        <hr />
+        <div class="row">
+          <div class="col-md-2 offset-md-8">
+            <button [disabled]="!f.valid" class="btn btn-primary" type="Submit">
+              Save
+            </button>
+          </div>
+
+          <div class="col-md-2">
+            <button class="btn btn-danger" (click)="onCancel()">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
